@@ -1,11 +1,11 @@
 import {Route, Routes} from "react-router-dom";
 import React from 'react';
 import {
-	CustomerPageClient,
-	DashboardPageClient,
-	EventsPageClient,
-	ReservationsPageClient,
-	ResourcesPageClient, SettingsPageClient
+	CustomerPage,
+	DashboardPage,
+	EventsPage,
+	ReservationsPage,
+	ResourcesPage, SettingsPage
 } from "../pages";
 import {SidebarClient} from "../parts";
 
@@ -15,12 +15,12 @@ export const ClientRoutes = () => {
 		<React.Fragment>
 			<SidebarClient/>
 			<Routes>
-				<Route path="/dashboard" element={<DashboardPageClient/>}/>
-				<Route path="/customers" element={<CustomerPageClient/>}/>
-				<Route path="/resources" element={<ResourcesPageClient/>}/>
-				<Route path="/reservations" element={<ReservationsPageClient/>}/>
-				<Route path="/events" element={<EventsPageClient/>}/>
-				<Route path="/settings" element={<SettingsPageClient/>}/>
+				<Route path="/dashboard" element={<DashboardPage/>}/>
+				<Route path="/customers" element={<CustomerPage/>}/>
+				<Route path="/resources" element={<ResourcesPage/>}/>
+				<Route path="/reservations" element={<ReservationsPage/>}/>
+				<Route path="/events" element={<EventsPage/>}/>
+				<Route path="/settings" element={<SettingsPage/>}/>
 			</Routes>
 		</React.Fragment>
 	)

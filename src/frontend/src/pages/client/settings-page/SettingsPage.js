@@ -159,7 +159,7 @@ const FormSystem = () => {
 	)
 }
 
-export const SettingsPageClient = () => {
+export const SettingsPage = () => {
 
 	return (
 		<div className={styles.container}>

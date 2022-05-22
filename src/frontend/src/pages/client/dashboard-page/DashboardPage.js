@@ -7,7 +7,6 @@ import employeeWidget from '@assets/svg/employeeWidget.svg'
 import placeWidget from '@assets/svg/placeWidget.svg'
 import terminWidget from '@assets/svg/terminWidget.svg'
 import loadAudio from './../../../assets/sounds/load.mp3'
-import ReactAudioPlayer from 'react-audio-player';
 import axios from "axios";
 
 import {useEffect, useState} from "react";
@@ -18,7 +17,7 @@ import {baseUrl} from "../../../config/const";
 import authHeader from "../../../services/auth-header";
 import {Map} from "./Map";
 
-export const DashboardPageClient = () => {
+export const DashboardPage = () => {
 
     const [isActiveShake, setIsLogoShake] = useState(false);
 

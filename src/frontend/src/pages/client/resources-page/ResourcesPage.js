@@ -5,7 +5,7 @@ import {Sources} from "./Sources/Sources";
 import {Employees} from "./Employees/Employees";
 import {Places} from "./Places/Places";
 
-export const ResourcesPageClient = () => {
+export const ResourcesPage = () => {
 	const [active, setActive] = useState(0);
 
 	useEffect(() => {

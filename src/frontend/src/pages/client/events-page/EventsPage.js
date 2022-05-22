@@ -1,14 +1,14 @@
 import styles from './EventsPage.module.scss'
 import React, {useEffect, useState} from "react";
 import {Event} from "./Event";
-import {createRoot, render} from "react-dom/client";
+import {createRoot} from "react-dom/client";
 import axios from "axios";
 import {baseUrl} from "../../../config/const";
 import authHeader from "../../../services/auth-header";
 import Modal from "./Modal";
 
 
-export const EventsPageClient = () => {
+export const EventsPage = () => {
 
     const [open, setOpen] = useState(false)
     const [event, setEvent] = useState('')

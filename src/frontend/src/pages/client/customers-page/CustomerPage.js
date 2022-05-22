@@ -54,7 +54,7 @@ import authHeader from "../../../services/auth-header";
 // 	{username: "Subham", firstname: "Darlene", lastname: "Volkman", email: "Larhonda5@owner.com", id: ""},
 // ]
 
-export const CustomerPageClient = () => {
+export const CustomerPage = () => {
 
     const [customers, setCustomers] = useState(undefined);
 

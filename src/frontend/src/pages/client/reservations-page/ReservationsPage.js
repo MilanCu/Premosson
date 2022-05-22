@@ -14,7 +14,7 @@ import ModalDetails from "./ModalDetails";
 // 	{firstname: "Subham", lastname: "Darlene", info: "Volkman", email: "Larhonda5@owner.com", id: "as654"},
 // ]
 
-export const ReservationsPageClient = () => {
+export const ReservationsPage = () => {
 
     const [data, setData] = useState(undefined);
     const [client, setClient] = useState(null);
