@@ -1,9 +1,9 @@
 import styles from './ResourcesPage.module.scss'
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Sources} from "./Sources/Sources";
-import {Employees} from "./Employees/Employees";
-import {Places} from "./Places/Places";
+import {Sources} from "./sources/Sources";
+import {Employees} from "./employees/Employees";
+import {Places} from "./places/Places";
 
 export const ResourcesPage = () => {
 	const [active, setActive] = useState(0);
