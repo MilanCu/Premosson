@@ -1,0 +1,115 @@
+.menu {
+
+    @media print {
+        display: none;
+    }
+
+    display: flex;
+    flex-direction: column;
+
+    position: fixed;
+    height: 100%;
+    max-width: 13%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+    background-color: #090C11;
+
+    .top {
+        text-align: center;
+
+        img {
+            width: 50%;
+            padding: 17% 25%;
+            border-bottom: 1px solid white;
+        }
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        padding: 5%;
+
+        .link {
+            display: flex;
+            align-content: center;
+            align-items: center;
+
+            margin-bottom: 7%;
+
+            padding: 5%;
+
+            a {
+                text-decoration: none;
+                font-size: 0.9rem;
+
+                &:hover {
+                    color: #bac5e0;
+                }
+            }
+
+            &.active {
+                background-color: #0066ff;
+                border-radius: 1.5vh;
+            }
+
+            > div {
+                cursor: pointer;
+
+                &:hover{
+                    color: #bac5e0;
+                }
+            }
+        }
+    }
+
+    .bottom {
+        background-color: #020406;
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7%;
+            background-color: rgba(0, 0, 0, 0);
+            width: 100%;
+            cursor: pointer;
+
+            img {
+                padding-right: 2vh;
+            }
+        }
+    }
+
+    .linkIcon {
+        display: flex;
+        align-items: center;
+        gap: 20%;
+        flex: 1;
+    }
+}
+
+.modal{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.91);
+    z-index: 999;
+
+    .content{
+        padding: 3%;
+        background-color: #090b11;
+        border: 2px solid rgba(0, 0, 0, 0.22);
+        box-sizing: border-box;
+        box-shadow: 3px 4px 15px -1px rgba(255, 255, 255, 0.22);
+        border-radius: 2vh;
+    }
+}

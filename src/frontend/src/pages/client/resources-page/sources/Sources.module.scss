@@ -1,124 +1,190 @@
-.body {
-    display: flex;
-    flex-direction: column;
-    padding: 2%;
-
-
+.container {
     .table {
-        display: flex;
-        flex-direction: column;
-        flex-basis: 90%;
-        margin: 2vh auto;
-        width: 90%;
-        background: #FFFFFF;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 10px;
+        background-color: #090b11;
+        width: 100%;
+        padding: 2%;
+        border-radius: 2vh;
+    }
 
-        table {
-            width: 100%;
-            table-layout: fixed;
-            border: 1px solid rgba(227, 227, 227, 0.35);
-            border-collapse: collapse;
-            border-radius: 10px;
+    .trHeader {
+        text-align: left;
+        padding-bottom: 20px;
 
-            .tRow:nth-child(odd) {
-                background: rgba(13, 110, 253, 0.31);
-            }
-
-            th {
-                font-weight: 400;
-            }
-
-            td, th {
-                border: 1px solid rgba(0, 0, 0, 0.23);
-                height: 8vh;
-                text-align: center;
-
-                p {
-                    margin: 1vh;
-                }
-
-                .buttonCell {
-
-                    button {
-                        cursor: pointer;
-                        margin: 5px;
-                        width: 10vh;
-                    }
-
-                    .buttonEdit {
-                        border-color: #00955B;
-                        color: #00955B;
-                    }
-
-                    .buttonEdit:hover {
-                        background: #00955B;
-                        color: #FFFFFF;
-                    }
-
-                    .buttonDelete {
-                        border-color: #DD5544;
-                        color: #DD5544;
-                    }
-
-                    .buttonDelete:hover {
-                        background: #DD5544;
-                        color: #FFFFFF;
-                    }
-                }
-
-
-            }
-
-            .collCheckbox {
-                width: 4%;
-                text-align: center;
-            }
-
-            input {
-                margin-bottom: 1vh;
-                width: 90%;
-            }
-        }
-
-        .buttonsContainer {
-            width: 100%;
-
-            div {
-                float: right;
-                padding: 1vh;
-
-                button {
-                    cursor: pointer;
-                    min-width: 100px;
-                    margin: 5px;
-                }
-            }
+        th {
+            border-bottom: 1px solid white;
+            font-size: 1.2em;
+            padding-bottom: 1%;
+            color: #edf3ff;
         }
     }
 
-    .buttonContainer {
-        margin: 0 9vh 0 auto;
 
-        .button {
-            min-width: 150px;
-            width: 10%;
-            height: 4.5vh;
-            margin-bottom: 1.3vh;
-            cursor: pointer;
-        }
-    }
-
-    .selectContainer {
-        display: flex;
-        flex-direction: row;
-        width: 90%;
-        margin: 0 auto;
+    td {
+        height: 10vh;
 
         button {
-            margin: 0 1vh;
-            min-width: 100px;
-            cursor: pointer;
+            margin-right: 5%;
+        }
+
+        &:last-child {
+            text-align: right;
         }
     }
+
+    > div {
+        margin-top: 2vh;
+        width: 100%;
+        text-align: right;
+
+        button {
+            font-size: 100%;
+            width: 13%;
+        }
+    }
+}
+
+.modalContainer {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.82);
+
+    .content {
+        padding: 3%;
+        background-color: #090b11;
+        border: 2px solid rgba(0, 0, 0, 0.22);
+        box-sizing: border-box;
+        box-shadow: 3px 4px 15px -1px rgba(255, 255, 255, 0.09);
+        border-radius: 2vh;
+        text-align: center;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4vh;
+
+        h1, h2 {
+            margin: 0;
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            margin: 1vh;
+
+            input {
+                margin-top: 1vh;
+            }
+        }
+
+        button {
+            width: 14vh;
+            height: 6vh;
+            border-radius: 3vh;
+            font-size: 100%;
+
+            background-color: rgb(255, 255, 255);
+            border: 1px solid white;
+
+            color: black;
+
+            &:hover {
+                background-color: #b4b4b4;
+            }
+        }
+
+        .error {
+            color: red;
+            height: 2vh;
+        }
+    }
+}
+
+option {
+    color: black;
+    background-color: #d4e2ee;
+}
+
+.loading {
+    background-color: black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+
+    .logoUp {
+        transform-origin: center;
+        animation-name: animationUp;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+    }
+
+    .logoDown {
+        transform-origin: center;
+        animation-name: animationDown;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+    }
+
+    @keyframes animationDown {
+        20% {
+            transform: translateY(55%) translateX(0%);
+        }
+
+        40% {
+            transform: translateY(55%) translateX(-125%);
+        }
+
+        60% {
+            transform: translateY(-55%) translateX(-125%);
+        }
+
+        80% {
+            transform: translateY(-55%) translateX(0%);
+        }
+
+        100% {
+            transform: translateY(0) translateX(0%);
+        }
+    }
+
+    @keyframes animationUp {
+        20% {
+            transform: translateY(-55%) translateX(0%);
+        }
+
+        40% {
+            transform: translateY(-55%) translateX(125%);
+        }
+
+        60% {
+            transform: translateY(55%) translateX(125%);
+        }
+
+        80% {
+            transform: translateY(55%) translateX(0%);
+        }
+
+        100% {
+            transform: translateY(0) translateX(0%);
+        }
+    }
+}
+
+svg * {
+    transform-box: fill-box;
 }

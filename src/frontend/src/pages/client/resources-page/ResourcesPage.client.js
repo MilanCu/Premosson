@@ -1,48 +1,35 @@
 import styles from './ResourcesPage.module.scss'
-import {useState, useEffect, useMemo} from "react";
-// import {useTable} from "react-table"
-import {Sources} from "./sources/Sources";
-import {Places} from "./places/Places";
-import {Employees} from "./employees/Employees";
+import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Sources} from "./Sources/Sources";
+import {Employees} from "./Employees/Employees";
+import {Places} from "./Places/Places";
 
 export const ResourcesPageClient = () => {
-    const [source, setSource] = useState(true);
-    const [place, setPlace] = useState(false);
-    const [employee, setEmployee] = useState(false);
+	const [active, setActive] = useState(0);
 
-    const activeSource = () => {
-        setSource(true)
-        setPlace(false)
-        setEmployee(false)
-    }
+	useEffect(() => {
+		localStorage.getItem("resources").includes("places") ? setActive(3) : localStorage.getItem("resources").includes("employees") ? setActive(2) : setActive(1)
+	},[])
 
-    const activePlace = () => {
-        setSource(false)
-        setPlace(true)
-        setEmployee(false)
-    }
-
-    const activeEmployee = () => {
-        setSource(false)
-        setPlace(false)
-        setEmployee(true)
-    }
-
-    return (
-        <div>
-            <div className={styles.menu}>
-                <button type={'button'} className={source ? styles.active : ""} onClick={activeSource}>Zdroje
-                </button>
-                <button type={'button'} className={place ? styles.active : ""} onClick={activePlace}>Místa
-                </button>
-                {/*<button type={'button'} className={employee ? styles.active : ""}*/}
-                {/*        onClick={activeEmployee}>Zaměstnanci*/}
-                {/*</button>*/}
-            </div>
-            {source ? <Sources/> : <></>}
-            {place ? <Places/> : <></>}
-            {employee ? <Employees/> : <></>}
-        </div>
-
-    )
+	return (
+		<div className={styles.container}>
+			<nav className={styles.nav}>
+				<Link to={''} onClick={() => {
+					setActive(1)
+				}} className={active === 1 ? styles.active : ""}>Sources</Link>
+				<Link to={''} onClick={() => {
+					setActive(2)
+				}} className={active === 2 ? styles.active : ""}>Employees</Link>
+				<Link to={''} onClick={() => {
+					setActive(3)
+				}} className={active === 3 ? styles.active : ""}>Places</Link>
+			</nav>
+			<div className={styles.content}>
+				{active === 1 ? <Sources/> : <></>}
+				{active === 2 ? <Employees/> : <></>}
+				{active === 3 ? <Places/> : <></>}
+			</div>
+		</div>
+	)
 }

@@ -1,29 +1,27 @@
 import {Route, Routes} from "react-router-dom";
 import React from 'react';
-
-import {NavbarClient} from "../parts";
 import {
-    CustomersPageClient,
-    DashboardPageClient,
-    ResourcesPageClient,
-    SettingsPageClient,
-    ProfilePageClient,
-    ReservationsPageClient,
-    EventsPageClient
+	CustomerPageClient,
+	DashboardPageClient,
+	EventsPageClient,
+	ReservationsPageClient,
+	ResourcesPageClient, SettingsPageClient
 } from "../pages";
+import {SidebarClient} from "../parts";
+
 
 export const ClientRoutes = () => {
-    return (<React.Fragment>
-        <NavbarClient/>
-        <Routes>
-            <Route exact path="/dashboard" element={<DashboardPageClient/>}/>
-            <Route exact path="/zdroje" element={<ResourcesPageClient/>}/>
-            <Route exact path="/terminy" element={<EventsPageClient/>}/>
-            <Route exact path="/rezervace" element={<ReservationsPageClient/>}/>
-            <Route exact path="/zakaznici" element={<CustomersPageClient/>}/>
-            <Route exact path="/nastaveni" element={<SettingsPageClient/>}/>
-            <Route exact path="/profil" element={<ProfilePageClient/>}/>
-            {/*<Route exact path="*" element={<DashboardPageClient/>}/>*/}
-        </Routes>
-    </React.Fragment>)
+	return (
+		<React.Fragment>
+			<SidebarClient/>
+			<Routes>
+				<Route path="/dashboard" element={<DashboardPageClient/>}/>
+				<Route path="/customers" element={<CustomerPageClient/>}/>
+				<Route path="/resources" element={<ResourcesPageClient/>}/>
+				<Route path="/reservations" element={<ReservationsPageClient/>}/>
+				<Route path="/events" element={<EventsPageClient/>}/>
+				<Route path="/settings" element={<SettingsPageClient/>}/>
+			</Routes>
+		</React.Fragment>
+	)
 }

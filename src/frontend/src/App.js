@@ -1,22 +1,14 @@
+import React, {useEffect, useState} from 'react';
 import './App.scss';
-import {Route, Routes} from "react-router-dom";
-import React, {useEffect, useState} from "react";
-
-import {
-    DocumentationPage,
-    IndexPage,
-    LoginPage,
-    RegistrationPage
-} from "./pages";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {ClientRoutes} from "./routes/ClientRoutes";
-import {CustomerRoutes} from "./routes/CustomerRoutes";
+// import {CustomerRoutes} from "./routes/CustomerRoutes";
+import {LoginPage, RegistrationPage, IndexPage} from "./pages";
 import AuthService from "./services/auth.service";
-import AboutUs from "./pages/global/welcome-page/AboutUs";
 
-const App = () => {
 
+function App() {
     const [regularUser, setRegularUser] = useState(false);
-    const [admin, setAdmin] = useState(false);
     const [systemOwner, setSystemOwner] = useState(false);
     const [systemEmployee, setSystemEmployee] = useState(false);
     const [currentUser, setCurrentUser] = useState(undefined);
@@ -26,7 +18,6 @@ const App = () => {
         if (user) {
             setCurrentUser(user);
             setRegularUser(user.roles.includes("ROLE_REGULAR_USER"));
-            setAdmin(user.roles.includes("ROLE_ADMIN"));
             setSystemOwner(user.roles.includes("ROLE_SYSTEM_OWNER"));
             setSystemEmployee(user.roles.includes("ROLE_SYSTEM_EMPLOYEE"));
         }
@@ -35,15 +26,13 @@ const App = () => {
     return (
         <div>
             <Routes>
-                <Route exact path="/" element={<IndexPage user={currentUser}/>}/>
-                <Route exact path="/login" element={<LoginPage/>}/>
-                <Route exact path="/register" element={<RegistrationPage/>}/>
-                <Route exact path="/about" element={<AboutUs/>}/>
-                <Route exact path="/documentation" element={<DocumentationPage/>}/>
+                <Route path="/" element={<IndexPage user={currentUser}/>}/>
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/registration" element={<RegistrationPage/>}/>
 
-                {regularUser && (
-                    <Route path="/app/*" element={<CustomerRoutes/>}/>
-                )}
+                {/*{regularUser && (*/}
+                {/*    <Route path="/app/*" element={<CustomerRoutes/>}/>*/}
+                {/*)}*/}
 
                 {systemOwner && (
                     <Route path="/app/*" element={<ClientRoutes/>}/>
@@ -54,7 +43,7 @@ const App = () => {
                 )}
             </Routes>
         </div>
-    )
+    );
 }
 
 export default App;

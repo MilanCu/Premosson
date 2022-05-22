@@ -1,87 +1,73 @@
 import styles from './LoginPage.module.scss'
 import {useEffect, useState} from "react";
-import {useNavigate} from 'react-router-dom';
 import AuthService from "../../../services/auth.service";
-import logo from "../../../assets/resnow.png";
-import backgroundImg from "../../../assets/loginPage/login-page-background.png";
+import {useNavigate} from "react-router-dom";
 
 const Form = () => {
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
     const [error, setError] = useState('');
 
     let navigate = useNavigate();
 
-    useEffect(()=>{
+    useEffect(() => {
         AuthService.logout();
-    },[])
+    }, [])
 
-    const login = (e) => {
+    const validation = (e) => {
         e.preventDefault();
-        AuthService.login(username, password).then(
-            () => {
-                navigate("/app/dashboard");
+        if (username.length === 0 || password.length === 0) {
+            setError('Please fill in the missing data');
+            e.preventDefault();
+        } else {
+            AuthService.login(username, password).then(() => {
+                navigate('/app/dashboard');
                 window.location.reload();
-            },
-            (error) => {
-                const resMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
+            }, (error) => {
+                const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
                 console.log(resMessage);
                 setError(resMessage);
-            }
-        )
+            });
+        }
     }
 
-    return (
-            <form className={styles.form} onSubmit={(e) => login(e)}>
-                <div className={styles.flexRow}>
-                    <img src={logo} alt={'logo'}/>
-                    <h2>Login</h2>
-                </div>
-                    <label>
-                        Username
-                    <input
-                        className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
-                        type={'text'}
-                        value={username}
-                        placeholder={'username'}
-                        autoComplete={'username'}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-
-                    </label>
-                <label>
-                    Password
-                    <input
-                        className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
-                        type={'password'}
-                        value={password}
-                        autoComplete={'current-password'}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-
-                </label>
-                <div className={styles.errorMessage}>
-                {error}
-                </div>
-                <button className={'button-primary'}>Login</button>
-            </form>
-    )
+    return (<form className={styles.form}>
+        <div className={styles.topContent}>
+            <p>Don't you have an account?</p>
+            <a href={'/registration'}>
+                <button className={'button-primary-outline'} type={'button'}>Registration</button>
+            </a>
+        </div>
+        <div className={styles.bodyContent}>
+            <p className={styles.topic}>Login</p>
+            <label>
+                Username
+                <input value={username} required={true} onChange={(e) => {
+                    setUsername(e.target.value)
+                    setError('')
+                }} type={'text'} className={'input-primary-full '.concat(error.length !== 0 ? 'error' : '')}
+                       placeholder={'Milancu'}/>
+            </label>
+            <label>
+                Password
+                <input value={password} required={true} onChange={(e) => {
+                    setPassword(e.target.value)
+                    setError('')
+                }} type={'password'} className={'input-primary-full '.concat(error.length !== 0 ? 'error' : '')}/>
+            </label>
+        </div>
+        <div className={styles.errorMessage}>{error}</div>
+        <div className={styles.bottomContent}>
+            <button type={'submit'} className={'button-primary'} onClick={(e) => {
+                validation(e)
+            }}>Login
+            </button>
+        </div>
+    </form>)
 }
 
 export const LoginPage = () => {
-    return (
-        <div className={styles.container}>
-            <div className={styles.background}>
-                <img src={backgroundImg} alt={'bg img'}/>
-            </div>
-            <Form/>
-        </div>
-    )
+    return (<div className={styles.container}>
+        <Form/>
+    </div>)
 }

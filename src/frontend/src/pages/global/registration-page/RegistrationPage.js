@@ -1,27 +1,25 @@
 import styles from './RegistrationPage.module.scss'
-import {useEffect, useState} from "react";
-import AuthService from "../../../services/auth.service";
-import logo from './../../../assets/resnow.png'
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import ReactTooltip from "react-tooltip";
-import axios from "axios";
-import {baseUrl} from "../../../config/const";
-import authService from "../../../services/auth.service";
+import AuthService from "../../../services/auth.service";
 import authHeader from "../../../services/auth-header";
+import {baseUrl} from "../../../config/const";
+import axios from "axios";
+import authService from "../../../services/auth.service";
 
 const Form = () => {
-
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
-    const [system, setSystem] = useState('');
-    const [provider, setProvider] = useState(true);
-    const [customer, setCustomer] = useState(false);
-
     const [error, setError] = useState('');
+    const [userType, setUserType] = useState(1);
+    const [system, setSystem] = useState('');
+
+    const [provider, setProvider] = useState(false);
+    const [customer, setCustomer] = useState(false);
 
     let navigate = useNavigate();
 
@@ -32,18 +30,10 @@ const Form = () => {
     const valid = (e) => {
         e.preventDefault();
 
-        const userType = provider ? "ROLE_SYSTEM_OWNER" : "ROLE_REGULAR_USER";
-
         let valid = true;
 
-        if (firstname.trim().length === 0 ||
-            lastname.trim().length === 0 ||
-            username.trim().length === 0 ||
-            email.trim().length === 0 ||
-            password.trim().length === 0 ||
-            rePassword.trim().length === 0
-        ) {
-            setError('Please fill data')
+        if (firstname.trim().length === 0 || lastname.trim().length === 0 || username.trim().length === 0 || email.trim().length === 0 || password.trim().length === 0 || rePassword.trim().length === 0) {
+            setError('Please fill in the missing data')
             valid = false;
             e.preventDefault()
         } else {
@@ -116,188 +106,143 @@ const Form = () => {
         }
 
         if (valid) {
-            AuthService.register(firstname, lastname, username, email, password, userType).then(
-                () => {
-                    if (provider) {
-                        authService.login(username, password).then(() => {
-                                axios.post(
-                                    `${baseUrl}/systems`,
-                                    {
-                                        "managers": [username],
-                                        "name": system
-                                    },
-                                    {headers: authHeader()}
-                                ).then(() => {
-                                    navigate("/app/dashboard");
-                                    window.location.reload();
-                                })
-                            }
-                        )
-                    } else {
-                        navigate("/login");
-                        window.location.reload();
-                    }
-                },
-                (error) => {
-                    const resMessage =
-                        (error.response &&
-                            error.response.data &&
-                            error.response.data.message) ||
-                        error.message ||
-                        error.toString();
-                    console.log(resMessage);
-                    setError(resMessage);
+            AuthService.register(firstname, lastname, username, email, password, userType).then(() => {
+                if (userType === 1) {
+                    authService.login(username, password).then(() => {
+                        axios.post(`${baseUrl}/systems`, {
+                            "managers": [username], "name": system
+                            // @ts-ignore
+                        }, {headers: authHeader()}).then(() => {
+                            navigate("/app/dashboard");
+                            window.location.reload();
+                        })
+                    })
+                } else {
+                    navigate("/login");
+                    window.location.reload();
                 }
-            );
+            }, (error) => {
+                const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+                console.log(resMessage);
+                setError(resMessage);
+            });
         }
     }
 
-    return (
-        <form className={styles.form} onSubmit={e => valid(e)}>
-            <div className={styles.flexRow}>
-                <img src={logo} alt={'logo'}/>
-                <h2>Registration</h2>
-            </div>
-            <div className={styles.flexRow}>
-                <div className={styles.leftInputs}>
+    return (<React.Fragment>
+        <form className={styles.form}>
+            <div className={styles.bodyContent}>
+                <p className={styles.topic}>Registrace</p>
+                <div className={styles.flex}>
                     <label>
                         Firstname
-                        <input
-                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
-                            type={'text'}
-                            value={firstname}
-                            placeholder={'John'}
-                            onClick={() => setError('')}
-                            onChange={(e) => setFirstname(e.target.value)}
-                        />
+                        <input value={firstname} required onChange={(e) => {
+                            setFirstname(e.target.value)
+                            setError('')
+                        }} type={'text'} className={'input-primary-full '.concat(error.length !== 0 ? 'error' : '')}
+                               placeholder={'Milan'}/>
                     </label>
-
-                    <label>
-                        Email
-                        <input
-                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
-                            type={'email'}
-                            value={email}
-                            placeholder={'john@example.com'}
-                            onClick={() => setError('')}
-                            onChange={(e) => {
-                                setEmail(e.target.value)
-                            }}
-                        />
-                    </label>
-
-                    <label>
-                        Password
-                        <input
-                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
-                            type={'password'}
-                            value={password}
-                            autoComplete="new-password"
-                            onClick={() => setError('')}
-                            onChange={(e) => {
-                                setPassword(e.target.value)
-                            }}
-                        />
-                    </label>
-                    <label
-                        data-tip data-for='provider'
-                        className={provider ? styles.labelChoose.concat(" ").concat(styles.active) : styles.labelChoose}>
-                        Provider
-                        <input type={'radio'} value={1} checked={provider ?? "chechked"} onChange={() => {
-                            setCustomer(!customer);
-                            setProvider(!provider)
-                        }}/>
-                    </label>
-                    <ReactTooltip id='provider' type='dark' effect='solid' place={'left'}>
-                        <span>Provider account is used for <br/> people who want to provide<br/> reservations.</span>
-                    </ReactTooltip>
-                </div>
-
-                <div className={styles.rightInputs}>
                     <label>
                         Lastname
-                        <input
-                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
-                            type={'text'}
-                            value={lastname}
-                            placeholder={'Lemon'}
-                            onClick={() => setError('')}
-                            onChange={(e) => {
-                                setLastname(e.target.value)
-                            }}
-                        />
+                        <input value={lastname} required onChange={(e) => {
+                            setLastname(e.target.value)
+                            setError('')
+                        }} type={'text'} className={'input-primary-full '.concat(error.length !== 0 ? 'error' : '')}
+                               placeholder={'Cu'}/>
                     </label>
+                </div>
+                <div className={styles.flex}>
                     <label>
                         Username
-                        <input
-                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
-                            type={'text'}
-                            value={username}
-                            placeholder={'lemonade'}
-                            autoComplete="username"
-                            onClick={() => setError('')}
-                            onChange={(e) => {
-                                setUsername(e.target.value)
-                            }}
-                        />
+                        <input value={username} required onChange={(e) => {
+                            setUsername(e.target.value)
+                            setError('')
+                        }} type={'text'} className={'input-primary-full '.concat(error.length !== 0 ? 'error' : '')}
+                               placeholder={'Milancu'}/>
                     </label>
                     <label>
-                        Repeat Password
-                        <input
-                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
-                            type={'password'}
-                            value={rePassword}
-                            autoComplete="new-password"
-                            onClick={() => setError('')}
-                            onChange={(e) => {
-                                setRePassword(e.target.value)
-                            }}
-                        />
+                        Email
+                        <input value={email} required onChange={(e) => {
+                            setEmail(e.target.value)
+                            setError('')
+                        }} type={'email'}
+                               className={'input-primary-full '.concat(error.length !== 0 ? 'error' : '')}
+                               placeholder={'milancu@premosson.com'}/>
                     </label>
-                    <label data-tip data-for='customer'
-                           className={customer ? styles.labelChoose.concat(" ").concat(styles.active) : styles.labelChoose}>
+                </div>
+                <div className={styles.flex}>
+                    <label>
+                        Password
+                        <input value={password} required onChange={(e) => {
+                            setPassword(e.target.value)
+                            setError('')
+                        }} type={'password'}
+                               className={'input-primary-full '.concat(error.length !== 0 ? 'error' : '')}/>
+                    </label>
+                    <label>
+                        Repeat password
+                        <input value={rePassword} required onChange={(e) => {
+                            setRePassword(e.target.value)
+                            setError('')
+                        }} type={'password'}
+                               className={'input-primary-full '.concat(error.length !== 0 ? 'error' : '')}/>
+                    </label>
+                </div>
+                <div className={styles.radios}>
+                    <label
+                        onMouseOver={() => {
+                            setProvider(true)
+                        }}
+                        onMouseLeave={() => {
+                            setProvider(false)
+                        }}
+                    >
+                        Provider
+                        <input type="radio" name="userType" value={1} required
+                               checked={userType === 1 ?? "checked"} onChange={() => setUserType(1)}/>
+                    </label>
+                    <label
+                        onMouseOver={() => {
+                            setCustomer(true)
+                        }}
+                        onMouseLeave={() => {
+                            setCustomer(false)
+                        }}
+                    >
                         Customer
-                        <input type={'radio'} value={2} checked={customer ?? "checked"} onChange={() => {
-                            setCustomer(!customer);
-                            setProvider(!provider)
-                        }}/>
+                        <input type="radio" name="userType" value={2} onChange={() => setUserType(2)} required/>
                     </label>
-                    <ReactTooltip id='customer' type='dark' effect='solid' place={'right'}>
-                        <span>Customer account is<br/> kind of account that is <br/>used just for making<br/> reservations.</span>
-                    </ReactTooltip>
                 </div>
             </div>
-            {provider ?
-                <label>
-                    System name
-                    <input
-                        className={'input-primary fl '.concat(error.trim().length !== 0 ? "error" : "")}
-                        type={'text'}
-                        value={system}
-                        placeholder={'Insacek'}
-                        onClick={() => setError('')}
-                        onChange={(e) => {
-                            setSystem(e.target.value)
-                        }}
-                    />
-                </label>
-                : null}
-            <div className={styles.errorMessage}>
-                {error}
+            {userType === 1 ? <label>
+                System name
+                <input value={system} required onChange={(e) => {
+                    setSystem(e.target.value)
+                    setError('')
+                }} type={'text'}
+                       className={'input-primary-full '.concat(error.length !== 0 ? 'error' : '')}
+                       placeholder={"Noname System"}
+                />
+            </label> : null}
+            <div className={styles.errorMessage}>{error}</div>
+            <div className={styles.bottomContent}>
+                <button type={'submit'} className={'button-primary'} onClick={(e) => {
+                    valid(e)
+                }}>Register
+                </button>
             </div>
-            <button
-                type={'submit'}
-                className={'button-primary bx-sh'}
-            >Register
-            </button>
         </form>
-    )
+        {provider ?
+            <div className={styles.tooltipP}>Provider account <br/>is used for <br/> people who want to <br/>provide
+                reservations.</div> : <></>}
+        {customer ?
+            <div className={styles.tooltipC}>Customer account is<br/> kind of account that is <br/>used just for
+                making<br/> reservations.</div> : <></>}
+    </React.Fragment>)
 }
 
 export const RegistrationPage = () => {
-    return (
-        <div className={styles.container}>
-            <Form/>
-        </div>
-    )
+    return (<div className={styles.container}>
+        <Form/>
+    </div>)
 }

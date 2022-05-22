@@ -1,27 +1,30 @@
-.menu {
-    margin: 2vh;
-    height: 8vh;
-    border-radius: 4vh;
+.container {
+    margin-left: 13%;
+    padding: 1.5%;
 
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    .nav {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5%;
 
-    button {
-        font-size: 0.8rem;
-        margin-left: 1vh;
-        width: 14.5vh;
-        height: 6vh;
-        border-radius: 3vh;
-        border: 1px solid rgba(13, 110, 253, 0.28);
-        background-color: white;
-        color: #1f77ef;
+        a {
+            text-decoration: none;
+            font-size: 1.5rem;
 
-        &.active {
-            border:none;
-            background-color: #e6f1ff;
-            color: #0D6EFD;
+            &:hover{
+                color: #8db1ea;
+            }
+
+            &.active{
+                font-size: 1.6rem;
+                font-weight: 500;
+                color: #dcecff;
+            }
         }
     }
 
+    .content{
+        padding: 2%;
+    }
 }
